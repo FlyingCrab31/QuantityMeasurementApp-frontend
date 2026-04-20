@@ -31,9 +31,11 @@ export interface RegisterRequest {
   password: string;
 }
 
+import { environment } from '../../environments/environment';
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly API = 'http://localhost:8080/auth';
+  private readonly API = `${environment.apiUrl}/auth`;
   private readonly TOKEN_KEY = 'qma_token';
   private readonly USER_KEY = 'qma_user';
 
@@ -58,7 +60,7 @@ export class AuthService {
   }
 
   loginWithGoogle(): void {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    window.location.href = `${environment.apiUrl}/oauth2/authorization/google`;
   }
 
   handleOAuthCallback(token: string, email: string, name: string, provider: string): void {

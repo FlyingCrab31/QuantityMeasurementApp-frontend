@@ -36,9 +36,11 @@ export const UNIT_CATEGORIES: UnitCategory[] = [
   }
 ];
 
+import { environment } from '../../environments/environment';
+
 @Injectable({ providedIn: 'root' })
 export class QuantityService {
-  private readonly API = 'http://localhost:8080/quantity';
+  private readonly API = `${environment.apiUrl}/quantity`;
 
   constructor(private http: HttpClient) {}
 
