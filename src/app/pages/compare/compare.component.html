@@ -1,0 +1,94 @@
+<div class="page-wrapper">
+  <div class="container">
+    <div class="page-header animate-fade-in-up">
+      <h1 class="page-title" id="compare-title">⚖️ Compare Quantities</h1>
+      <p class="page-subtitle">Check if two quantities are equivalent</p>
+    </div>
+
+    <div class="compare-card glass-card animate-fade-in-up delay-1">
+      <!-- Category Selector -->
+      <div class="category-selector">
+        <button *ngFor="let cat of categories"
+                class="category-btn"
+                [class.active]="selectedCategory === cat"
+                (click)="selectedCategory = cat; onCategoryChange()"
+                [id]="'cmp-cat-' + cat.name.toLowerCase()">
+          <span class="cat-icon">{{ cat.icon }}</span>
+          <span class="cat-name">{{ cat.name }}</span>
+        </button>
+      </div>
+
+      <!-- Comparison Inputs -->
+      <div class="compare-body">
+        <!-- Quantity 1 -->
+        <div class="quantity-group">
+          <label class="form-label">Quantity 1</label>
+          <div class="input-row">
+            <input class="form-input value-input" type="number"
+                   [(ngModel)]="value1"
+                   placeholder="Enter value"
+                   id="compare-value1"
+                   (keyup.enter)="compare()">
+            <select class="form-select unit-select"
+                    [(ngModel)]="unit1"
+                    id="compare-unit1">
+              <option *ngFor="let u of selectedCategory.units" [value]="u">
+                {{ formatUnit(u) }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- VS Badge -->
+        <div class="vs-badge">VS</div>
+
+        <!-- Quantity 2 -->
+        <div class="quantity-group">
+          <label class="form-label">Quantity 2</label>
+          <div class="input-row">
+            <input class="form-input value-input" type="number"
+                   [(ngModel)]="value2"
+                   placeholder="Enter value"
+                   id="compare-value2"
+                   (keyup.enter)="compare()">
+            <select class="form-select unit-select"
+                    [(ngModel)]="unit2"
+                    id="compare-unit2">
+              <option *ngFor="let u of selectedCategory.units" [value]="u">
+                {{ formatUnit(u) }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div class="error-msg" *ngIf="error">
+        <span>⚠️</span> {{ error }}
+      </div>
+
+      <!-- Compare Button -->
+      <button class="btn btn-primary btn-block btn-lg"
+              (click)="compare()"
+              [disabled]="loading"
+              id="compare-btn">
+        {{ loading ? 'Comparing...' : 'Compare' }}
+      </button>
+
+      <!-- Result -->
+      <div *ngIf="showResult && result !== null"
+           class="compare-result"
+           [class.equal]="result"
+           [class.not-equal]="!result"
+           id="compare-result">
+        <span class="result-icon">{{ result ? '✅' : '❌' }}</span>
+        <span class="result-label">{{ result ? 'Equal!' : 'Not Equal' }}</span>
+        <p class="result-detail">
+          {{ value1 }} {{ formatUnit(unit1) }}
+          {{ result ? '=' : '≠' }}
+          {{ value2 }} {{ formatUnit(unit2) }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<div class="page-wrapper">
+  <div class="container">
+    <div class="page-header animate-fade-in-up">
+      <h1 class="page-title" id="converter-title">🔄 Unit Converter</h1>
+      <p class="page-subtitle">Convert between different units of measurement</p>
+    </div>
+
+    <div class="converter-card glass-card animate-fade-in-up delay-1">
+      <!-- Category Selector -->
+      <div class="category-selector">
+        <button *ngFor="let cat of categories"
+                class="category-btn"
+                [class.active]="selectedCategory === cat"
+                (click)="selectedCategory = cat; onCategoryChange()"
+                [id]="'cat-' + cat.name.toLowerCase()">
+          <span class="cat-icon">{{ cat.icon }}</span>
+          <span class="cat-name">{{ cat.name }}</span>
+        </button>
+      </div>
+
+      <!-- Converter Body -->
+      <div class="converter-body">
+        <!-- Source -->
+        <div class="converter-input-group">
+          <label class="form-label">From</label>
+          <div class="input-row">
+            <input class="form-input value-input" type="number"
+                   [(ngModel)]="sourceValue"
+                   placeholder="Enter value"
+                   id="source-value"
+                   (keyup.enter)="convert()">
+            <select class="form-select unit-select"
+                    [(ngModel)]="sourceUnit"
+                    id="source-unit">
+              <option *ngFor="let u of selectedCategory.units" [value]="u">
+                {{ formatUnit(u) }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Swap Button -->
+        <button class="swap-btn" (click)="swapUnits()" id="swap-units" title="Swap units">
+          <span class="swap-icon">⇅</span>
+        </button>
+
+        <!-- Target -->
+        <div class="converter-input-group">
+          <label class="form-label">To</label>
+          <div class="input-row">
+            <div class="result-display" [class.has-result]="showResult">
+              {{ showResult && result ? result.value.toFixed(4) : '—' }}
+            </div>
+            <select class="form-select unit-select"
+                    [(ngModel)]="targetUnit"
+                    id="target-unit">
+              <option *ngFor="let u of selectedCategory.units" [value]="u">
+                {{ formatUnit(u) }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div class="error-msg" *ngIf="error">
+        <span>⚠️</span> {{ error }}
+      </div>
+
+      <!-- Convert Button -->
+      <button class="btn btn-primary btn-block btn-lg convert-btn"
+              (click)="convert()"
+              [disabled]="loading"
+              id="convert-btn">
+        {{ loading ? 'Converting...' : 'Convert' }}
+      </button>
+
+      <!-- Result Summary -->
+      <div class="result-summary" *ngIf="showResult && result" id="convert-result">
+        <span class="result-text">
+          {{ sourceValue }} {{ formatUnit(sourceUnit) }} = <strong>{{ result.value.toFixed(4) }} {{ formatUnit(result.unit) }}</strong>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

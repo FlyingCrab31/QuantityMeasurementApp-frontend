@@ -1,0 +1,66 @@
+<div class="page-wrapper">
+  <div class="container">
+    <!-- Hero -->
+    <div class="hero animate-fade-in-up">
+      <h1 class="hero-title" id="dashboard-title">
+        <ng-container *ngIf="auth.currentUser$ | async as user; else guest">
+          Hello, <span class="hero-name">{{ user.name }}</span> 👋
+        </ng-container>
+        <ng-template #guest>
+          Hello, Guest 👋
+        </ng-template>
+      </h1>
+      <p class="hero-subtitle">What would you like to measure today?</p>
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="features-grid">
+      <a *ngFor="let f of features; let i = index"
+         [routerLink]="f.route"
+         class="feature-card glass-card animate-fade-in-up"
+         [class]="'delay-' + (i + 1)"
+         [style.background]="f.gradient"
+         [id]="'feature-' + f.title.toLowerCase()">
+        <div class="feature-icon-wrap" [style.border-color]="f.borderColor">
+          <span class="feature-icon">{{ f.icon }}</span>
+        </div>
+        <h3 class="feature-title">{{ f.title }}</h3>
+        <p class="feature-desc">{{ f.description }}</p>
+        <span class="feature-arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Supported Units -->
+    <div class="units-section animate-fade-in-up delay-4">
+      <h2 class="section-title">Supported Units</h2>
+      <div class="units-grid">
+        <div *ngFor="let cat of unitCategories" class="unit-card glass-card">
+          <span class="unit-icon">{{ cat.icon }}</span>
+          <h4 class="unit-name">{{ cat.name }}</h4>
+          <p class="unit-list">{{ cat.units }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent History -->
+    <div class="recent-history-section animate-fade-in-up delay-5" *ngIf="recentHistory.length > 0">
+      <div class="section-header">
+        <h2 class="section-title">Recent History</h2>
+        <a routerLink="/history" class="view-all-link">View All History →</a>
+      </div>
+      <div class="recent-history-list">
+        <div *ngFor="let item of recentHistory" class="recent-history-item glass-card">
+          <div class="history-item-icon" [ngClass]="item.type.toLowerCase()">
+            <span *ngIf="item.type === 'Convert'">🔄</span>
+            <span *ngIf="item.type === 'Compare'">⚖️</span>
+            <span *ngIf="item.type === 'Add'">➕</span>
+          </div>
+          <div class="history-item-content">
+            <h4 class="history-item-type">{{ item.type }}</h4>
+            <p class="history-item-details">{{ item.details }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

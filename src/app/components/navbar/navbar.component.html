@@ -1,0 +1,77 @@
+<nav class="navbar" id="main-navbar">
+  <div class="navbar-inner">
+    <!-- Logo -->
+    <a routerLink="/dashboard" class="navbar-brand" id="nav-logo" (click)="closeAll()">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">QMA</span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <div class="navbar-links" [class.open]="menuOpen">
+      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+         id="nav-dashboard" (click)="closeAll()">
+        <span class="nav-icon">🏠</span> Dashboard
+      </a>
+      <a routerLink="/convert" routerLinkActive="active"
+         id="nav-convert" (click)="closeAll()">
+        <span class="nav-icon">🔄</span> Convert
+      </a>
+      <a routerLink="/compare" routerLinkActive="active"
+         id="nav-compare" (click)="closeAll()">
+        <span class="nav-icon">⚖️</span> Compare
+      </a>
+      <a routerLink="/add" routerLinkActive="active"
+         id="nav-add" (click)="closeAll()">
+        <span class="nav-icon">➕</span> Add
+      </a>
+      <a routerLink="/history" routerLinkActive="active"
+         id="nav-history" (click)="closeAll()">
+        <span class="nav-icon">🕒</span> History
+      </a>
+    </div>
+
+    <!-- User Menu -->
+    <div class="navbar-user" *ngIf="auth.currentUser$ | async as user; else loginBtn">
+      <button class="user-btn" id="nav-user-btn" (click)="toggleProfile()">
+        <span class="user-avatar">{{ getInitials(user.name) }}</span>
+        <span class="user-name">{{ user.name }}</span>
+        <span class="chevron" [class.rotated]="profileOpen">▾</span>
+      </button>
+
+      <div class="profile-dropdown" *ngIf="profileOpen" id="profile-dropdown">
+        <div class="dropdown-header">
+          <span class="dropdown-name">{{ user.name }}</span>
+          <span class="dropdown-email">{{ user.email }}</span>
+        </div>
+        <div class="dropdown-divider"></div>
+        <a routerLink="/profile" class="dropdown-item" id="nav-profile" (click)="closeAll()">
+          👤 Profile
+        </a>
+        <button class="dropdown-item logout" id="nav-logout" (click)="logout()">
+          🚪 Logout
+        </button>
+      </div>
+    </div>
+
+    <ng-template #loginBtn>
+      <div class="navbar-user auth-buttons">
+        <a routerLink="/login" class="auth-btn login-btn" id="nav-login" (click)="closeAll()">
+          Log In
+        </a>
+        <a routerLink="/register" class="auth-btn signup-btn" id="nav-signup" (click)="closeAll()">
+          Sign Up
+        </a>
+      </div>
+    </ng-template>
+
+    <!-- Hamburger -->
+    <button class="hamburger" id="nav-hamburger" (click)="toggleMenu()" [class.active]="menuOpen">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Overlay -->
+<div class="nav-overlay" *ngIf="menuOpen || profileOpen" (click)="closeAll()"></div>

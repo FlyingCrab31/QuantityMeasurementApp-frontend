@@ -1,0 +1,80 @@
+<div class="page-wrapper">
+  <div class="container">
+    <div class="page-header animate-fade-in-up">
+      <h1 class="page-title" id="profile-title">👤 My Profile</h1>
+      <p class="page-subtitle">Manage your account settings</p>
+    </div>
+
+    <div class="profile-card glass-card animate-fade-in-up delay-1" *ngIf="user">
+      <!-- Avatar Section -->
+      <div class="profile-avatar-section">
+        <div class="profile-avatar" id="profile-avatar">
+          {{ getInitials(user.name) }}
+        </div>
+        <div class="profile-meta">
+          <h2 class="profile-name">{{ user.name }}</h2>
+          <p class="profile-email">{{ user.email }}</p>
+        </div>
+      </div>
+
+      <!-- Success message -->
+      <div class="success-msg" *ngIf="success">
+        <span>✅</span> {{ success }}
+      </div>
+
+      <!-- Info Grid -->
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-label">Name</span>
+          <div class="info-value-row" *ngIf="!editing">
+            <span class="info-value" id="profile-name-value">{{ user.name }}</span>
+            <button class="edit-btn" (click)="startEdit()" id="edit-name-btn">✏️ Edit</button>
+          </div>
+          <div class="edit-row" *ngIf="editing">
+            <input class="form-input" type="text"
+                   [(ngModel)]="editName"
+                   id="edit-name-input"
+                   (keyup.enter)="saveProfile()">
+            <button class="btn btn-primary btn-sm" (click)="saveProfile()"
+                    [disabled]="saving" id="save-name-btn">
+              {{ saving ? '...' : 'Save' }}
+            </button>
+            <button class="btn btn-secondary btn-sm" (click)="cancelEdit()" id="cancel-edit-btn">
+              Cancel
+            </button>
+          </div>
+          <div class="form-error" *ngIf="error">{{ error }}</div>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">Email</span>
+          <span class="info-value">{{ user.email }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">Auth Provider</span>
+          <span class="info-value">
+            <span class="provider-badge" [class.google]="user.provider === 'GOOGLE'"
+                  [class.local]="user.provider === 'LOCAL'">
+              {{ user.provider === 'GOOGLE' ? '🔵 Google' : '🔐 Local' }}
+            </span>
+          </span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">Role</span>
+          <span class="info-value role-badge">{{ user.role }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">Account Status</span>
+          <span class="info-value">
+            <span class="status-badge" [class.active]="user.enabled">
+              {{ user.enabled ? '🟢 Active' : '🔴 Inactive' }}
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

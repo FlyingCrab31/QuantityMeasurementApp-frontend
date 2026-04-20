@@ -1,0 +1,97 @@
+<div class="page-wrapper">
+  <div class="container">
+    <div class="page-header animate-fade-in-up">
+      <h1 class="page-title" id="add-title">➕ Add Quantities</h1>
+      <p class="page-subtitle">Sum two quantities, even in different units</p>
+    </div>
+
+    <div class="add-card glass-card animate-fade-in-up delay-1">
+      <!-- Info Banner -->
+      <div class="info-banner">
+        💡 Temperature units do not support addition
+      </div>
+
+      <!-- Category Selector -->
+      <div class="category-selector">
+        <button *ngFor="let cat of categories"
+                class="category-btn"
+                [class.active]="selectedCategory === cat"
+                (click)="selectedCategory = cat; onCategoryChange()"
+                [id]="'add-cat-' + cat.name.toLowerCase()">
+          <span class="cat-icon">{{ cat.icon }}</span>
+          <span class="cat-name">{{ cat.name }}</span>
+        </button>
+      </div>
+
+      <!-- Inputs -->
+      <div class="add-body">
+        <!-- Quantity 1 -->
+        <div class="quantity-group">
+          <label class="form-label">Quantity 1</label>
+          <div class="input-row">
+            <input class="form-input value-input" type="number"
+                   [(ngModel)]="value1"
+                   placeholder="Enter value"
+                   id="add-value1"
+                   (keyup.enter)="add()">
+            <select class="form-select unit-select"
+                    [(ngModel)]="unit1"
+                    id="add-unit1">
+              <option *ngFor="let u of selectedCategory.units" [value]="u">
+                {{ formatUnit(u) }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Plus Badge -->
+        <div class="plus-badge">+</div>
+
+        <!-- Quantity 2 -->
+        <div class="quantity-group">
+          <label class="form-label">Quantity 2</label>
+          <div class="input-row">
+            <input class="form-input value-input" type="number"
+                   [(ngModel)]="value2"
+                   placeholder="Enter value"
+                   id="add-value2"
+                   (keyup.enter)="add()">
+            <select class="form-select unit-select"
+                    [(ngModel)]="unit2"
+                    id="add-unit2">
+              <option *ngFor="let u of selectedCategory.units" [value]="u">
+                {{ formatUnit(u) }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div class="error-msg" *ngIf="error">
+        <span>⚠️</span> {{ error }}
+      </div>
+
+      <!-- Add Button -->
+      <button class="btn btn-primary btn-block btn-lg"
+              (click)="add()"
+              [disabled]="loading"
+              id="add-btn">
+        {{ loading ? 'Calculating...' : 'Calculate Sum' }}
+      </button>
+
+      <!-- Result -->
+      <div *ngIf="showResult && result" class="add-result" id="add-result">
+        <div class="result-equation">
+          <span class="eq-part">{{ value1 }} {{ formatUnit(unit1) }}</span>
+          <span class="eq-op">+</span>
+          <span class="eq-part">{{ value2 }} {{ formatUnit(unit2) }}</span>
+          <span class="eq-op">=</span>
+        </div>
+        <div class="result-value">
+          {{ result.value.toFixed(4) }} {{ formatUnit(result.unit) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

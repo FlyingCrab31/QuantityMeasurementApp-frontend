@@ -1,0 +1,41 @@
+<div class="page-wrapper">
+  <div class="container">
+    <div class="page-header animate-fade-in-up">
+      <h1 class="page-title">Conversion History</h1>
+      <p class="page-subtitle">Review your past measurements and conversions.</p>
+    </div>
+
+    <div class="history-content animate-fade-in-up delay-1">
+      <div class="history-actions glass-card" *ngIf="historyItems.length > 0">
+        <button class="btn btn-secondary" (click)="clearHistory()">
+          <span class="btn-icon">🗑️</span> Clear History
+        </button>
+      </div>
+
+      <div class="history-list" *ngIf="historyItems.length > 0; else noHistory">
+        <div class="history-card glass-card animate-fade-in-up" *ngFor="let item of historyItems; let i = index" [class]="'delay-' + ((i % 4) + 1)">
+          <div class="history-icon" [ngClass]="item.type.toLowerCase()">
+            <span *ngIf="item.type === 'Convert'">🔄</span>
+            <span *ngIf="item.type === 'Compare'">⚖️</span>
+            <span *ngIf="item.type === 'Add'">➕</span>
+          </div>
+          <div class="history-details">
+            <h3 class="history-type">{{ item.type }}</h3>
+            <p class="history-text">{{ item.details }}</p>
+          </div>
+          <div class="history-time">
+            {{ item.timestamp | date:'medium' }}
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noHistory>
+        <div class="no-history glass-card text-center">
+          <div class="no-history-icon">📝</div>
+          <h3>No History Yet</h3>
+          <p>Your conversion history will appear here once you start using the app.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
